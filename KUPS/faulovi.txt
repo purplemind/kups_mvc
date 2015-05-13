@@ -1,0 +1,68 @@
+OH Holding, offense
+FST False start
+DOF Offside, defense
+DPI Pass interference, defense
+OPI Pass interference, offense
+FGT Fighting
+KCI Kickcatch interference
+IBB Illegal block in the back
+KOB Free kick out of bounds
+ING Intentional grounding
+BBW/PF Personal foul, blocking below the waist
+CHB/PF Personal foul, chop block
+FMM/PF Personal foul, face mask, 15 yards
+HCT/PF Personal foul, horse collar tackle
+HDR/PF Personal foul, hit on defenceless receiver
+LTO/PF Personal foul, late hit out of bounds
+RPS/PF Personal foul, roughing the passer
+RRK/PF Personal foul, roughing the kicker/holder
+UNR/PF Personal foul, other unnecessary roughness
+UNS/UC Unsportsmanlike act, other
+BAT Illegal batting
+DH Holding, defense
+DOD Delay of game, defense
+DOG Delay of game, offense
+DSQ Disqualification
+ENC Encroachment (offense)
+EQV Equipment violation
+FBG Fighting before game
+FFH Fighting, first half
+FHT Fighting, half-time
+FSH Fighting, second half
+IDP Ineligible downfield on pass
+IFK Illegal free kick formation
+IFP Illegal forward pass
+IKB Illegally kicking ball
+ILF Illegal formation
+ILM Illegal motion
+ILP Illegal participation
+ILS Illegal substitution
+INL Interlockin legs
+ISH Illegal shift
+ISP Illegal snap
+ITP Illegal touching of a forward pass
+KIK Illegal kick
+OFK Offside, kicking team
+BTH/PF Personal foul, blow to the head
+BUT/PF Personal foul, butting/ramming with helmet
+CLP/PF Personal foul, clipping
+HTF/PF Personal foul, hands to the face
+HUR/PF Personal foul, hurdling
+ICB/PF Personal foul, illegal crackback
+ICS/PF Personal foul, illegal contact with snapper
+LEA/PF Personal foul, leaping
+LEV/PF Personal foul, leverage
+LTP/PF Personal foul, late hit/piling on
+RFK/PF Personal foul, roughing free kicker
+SKE/PF Personal foul, striking/kneeing/elbowing
+TRP/PF Personal foul, tripping
+RNH Running into the kicker/holder
+SLI Sideline interference, 5 yards
+SLM Sideline interference, 15 yards
+ABL/UC Unsportsmanlike act, abusive language
+BCH/UC Unsportsmanlike act, bench
+DEA/UC Unsportsmanlike act, delayed/excessive act
+RHT/UC Unsportsmanlike act, removal of helmet
+STB/UC Unsportsmanlike act, spiking/throwing ball
+TAU/UC Unsportsmanlike act, taunting/baiting
+UFT Unfair tactics

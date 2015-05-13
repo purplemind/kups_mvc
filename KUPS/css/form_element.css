@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+.form_element {
+	display: block;
+	margin-bottom: 10px;
+	margin-top: 15px;
+}
+
+.form_element radio {
+	margin-right: 20px;
+}
+
+.required-label:after {
+  content:"*";
+  color:red;
+}
+
+/*
+.required input {
+  box-shadow: 4px 4px 20px rgba(200, 0, 0, 0.85);
+}
+*/
+
+#klubovi_sudije {
+	margin-top: 20px;
+}
+
+.poseban_odeljak {
+	display: block;
+	margin-bottom: 20px;
+}
+
+.finished_step {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 5px;
+	background-color: #e0b6ff;
+}

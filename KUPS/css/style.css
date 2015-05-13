@@ -1,0 +1,93 @@
+body {
+	background-color: #ffffff;
+	font-size: 14px;
+	/*font-family: 'Arvo', serif;*/
+	font-family: "Droid Serif",Georgia,"Times New Roman",Times,serif;
+	text-shadow: 0 1px 1px #e5e5e5;
+}
+
+#content {
+  border: 1px solid red;
+  width: 1024px;
+  text-align: left;
+}
+
+#menu {
+	width: 20%;
+	float: left;
+	margin: 0px;
+	padding: 0px 0px 0px 10px;
+}
+
+#menu ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+li.first {
+	margin-top: 5px;
+}
+
+#menu ul li {
+  margin-left: 10px;
+  margin-bottom: 3px;
+  list-style: none;
+}
+
+#main_content {
+	width: 75%;
+  float: left;	
+}
+
+.clear-float {
+	clear: both;
+}
+
+.msg {
+  font-weight: bold;
+  font-size: 0.8em;
+  margin-bottom: 10px;
+  padding-left: 10px; 
+}
+
+.error {
+	background-color: #ffb8b8;
+  color: #bc0008;
+}
+
+.info {
+	background-color: #c5ffc6;
+  color: #00e031;
+}
+
+table {
+	border: solid 1px #00c82a;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	padding: 3px;
+}
+
+table th, td {
+	padding-left: 5px;
+	font-size: 0.9em;
+}
+
+table tr.odd {
+	background-color: #62e5da;
+}
+
+table tr.even {
+  background-color: #fff;
+}
+
+table td {
+	width: 150px;
+	height: 20px;
+	/*font-size: 0.9em;*/
+}
+
+table caption {
+	margin: 20px 0px 10px 0px;
+	font-size: 1.1em;
+	font-weight: bold;
+}
