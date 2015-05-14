@@ -15,24 +15,25 @@
   color:red;
 }
 
+.inline {
+	float: left;
+	margin-right: 20px;
+}
+
+.inline.last {
+	margin-right: 0px;
+}
+
+.clear_float {
+	clear: both;
+}
+
 /*
 .required input {
   box-shadow: 4px 4px 20px rgba(200, 0, 0, 0.85);
 }
 */
 
-#klubovi_sudije {
+#utakmica {
 	margin-top: 20px;
-}
-
-.poseban_odeljak {
-	display: block;
-	margin-bottom: 20px;
-}
-
-.finished_step {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding: 5px;
-	background-color: #e0b6ff;
 }

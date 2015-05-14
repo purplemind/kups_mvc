@@ -6,16 +6,11 @@ class utakmicaModel {
 	
 	public $godina_sezone;
 	public $datum;
-	public $vreme_pocetka;
 	public $sifra_lige;
 	public $domacin;
 	public $gost;
-	public $domacin_ht_golova;
-	public $gost_ht_golova;
-	public $domacin_ft_golova;
-	public $gost_ft_golova;
-	public $broj_ot;
-	public $trajanje_ot;
+	public $domacin_golova;
+	public $gost_golova;
 	public $pregled;
 	public $pregledana;
 	public $sudija_R;
@@ -29,16 +24,11 @@ class utakmicaModel {
 	private function init() {
 		$this->godina_sezone = date('Y');
 		$this->datum = time();
-		$this->vreme_pocetka = '';
 		$this->sifra_lige = '';
 		$this->domacin = '';
 		$this->gost = '';
-		$this->domacin_ht_golova = 0;
-		$this->gost_ht_golova = 0;
-		$this->domacin_ft_golova = 0;
-		$this->gost_ft_golova = 0;
-		$this->broj_ot = 0;
-		$this->trajanje_ot = 0;
+		$this->domacin_golova = 0;
+		$this->gost_golova = 0;
 		$this->pregled = 0;
 		$this->pregledana = 0;
 		$this->sudija_R = '';

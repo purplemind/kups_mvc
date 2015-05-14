@@ -41,6 +41,10 @@ class Router {
 		$this->path = $path;
 	}
 	
+	public function getPath() {
+	  return $this->path;
+	}
+	
 	/**
 	 * Return HTML content
 	 * 
@@ -76,7 +80,7 @@ class Router {
 	
 	/**
 	 * Method that will decide which controller to load
-	 * By the way: set $action if exists, otherwiae set $action to 'index'
+	 * By the way: set $action if exists, otherwise set $action to 'index'
 	 * Set $controller if exists, otherwise set $controller to 'index'
 	 * Set $file to path of the seted controller
 	 * 

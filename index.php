@@ -10,15 +10,21 @@ error_reporting(E_ALL);
 	include_once 'app/template.class.php';
 	
 	$site_path = realpath(dirname(__FILE__));
-	define ('__SITE_PATH', $site_path);
-	
-	$register = new Registry;
+ 	define ('__SITE_PATH', $site_path);
+ 	
+ 	$register = new Registry;
 	$db = new DB;
-	$register->db_conn = $db->connect();
-	$register->infos = new Info;
-	$register->template = new Template($register);
-	$register->router = new Router($register);
-	$register->router->setPath(__SITE_PATH . '/' . 'controller');
+ 	$register->db_conn = $db->connect();
+ 	$register->infos = new Info;
+ 	$register->template = new Template($register);
+ 	$register->router = new Router($register);
+ 	$register->router->setPath(__SITE_PATH . '/' . 'controller');
+ 	
+ 	if (isset($_POST['ajax_request'])) {// && $_POST['ajax_request'] === TRUE) {
+ 	  echo $register->router->loader();
+ 	}
+ 	else {
+ 	
 ?>
 
 <!DOCTYPE html>
@@ -73,4 +79,5 @@ error_reporting(E_ALL);
 	</div>
 </body>
 
-</html> 
+</html>
+<?php } // else?>
