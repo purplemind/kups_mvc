@@ -65,6 +65,16 @@
 	padding: 5px;
 }
 
+.dodaj_prekrsaj_btn {
+	background-color: #5cb216;
+	padding: 5px;
+	color: #fff;
+	cursor: pointer;
+	float: right;
+	font-size: 0.9em;
+	margin-bottom: 5px;
+}
+
 .prekrsaji_sudije {
 	float: left;
 	width: 38%;
@@ -73,4 +83,14 @@
 
 .prekrsaj {
 	margin-top: 5px;
+}
+
+img.delete_prekrsaj, img.delete_sudija {
+	width: 15px;
+	cursor: pointer;
+	display: inline;
+}
+
+img.delete_sudija {
+  margin-right: 10px;
 }

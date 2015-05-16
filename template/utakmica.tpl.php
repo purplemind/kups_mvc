@@ -28,6 +28,7 @@
   		<div class="inline last">
   			<label for="sifra_lige" class="required-label">Liga: </label>
   			<select name="required[sifra_lige]" id="sifra_lige">
+  			   <option value="0">- Liga -</option>
   				<?php foreach ($lige as $index => $value): ?>
   					<option value="<?php print $value['sifra_lige']; ?>" <?php if ($value['sifra_lige'] == $utakmica->sifra_lige) { print 'selected="selected"'; }?>><?php print $value['naziv_lige']; ?></option>
   				<?php endforeach; ?>

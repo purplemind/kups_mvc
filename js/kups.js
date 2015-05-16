@@ -1,4 +1,7 @@
 $(function() {
+	
+	$("form")[0].reset();
+	$('#broj_sudija').val(0);
 
 	var windowWidth = Math.floor(window.innerWidth);
 	var windowHeight = Math.floor(window.innerHeight);
@@ -10,6 +13,7 @@ $(function() {
     	'dateFormat': "dd/mm/yy"
     });
 	
+	// Dodaj sudiju
     $("#dodajSudiju").click( function() {
     	$.ajax({
     		method: "POST",
@@ -32,6 +36,7 @@ $(function() {
     	return false;
     });
 	
+    // Dodaj prekrsaj
 	$(document).on('click', '.dodaj_prekrsaj_btn', function() {
 		id = $(this).attr('id');
 		res = id.split("_");
@@ -39,7 +44,7 @@ $(function() {
 		$.ajax({
 			method: "POST",
 			url: "index.php?ruta=ajax/sudije/prekrsaji_template/" + 
-				$('#broj_sudija').val() + "/" + 
+				broj_sudije + "/" + 
 				(parseInt($('#broj_prekrsaja_sudija_' + broj_sudije).val()) + 1),
 			data: { ajax_request: true, dataType: 'html' }, 
 			datatype: 'html',
@@ -58,6 +63,7 @@ $(function() {
 		return false;
 	});
     
+	// Prikaz odabira klubova nakon sto se odabere liga
     $('#sifra_lige').change( function() {
     	$('#loading').show();
     	$.ajax({
@@ -88,5 +94,65 @@ $(function() {
     		$('#loading').hide();
     	});
     });
-        
+
+    // Obrisi prekrsaj
+    $(document).on('click', '.delete_prekrsaj', function() {
+    	id = $(this).attr('id');
+		res = id.split("_");
+		var broj_sudije = res[res.length - 2];
+		var broj_prekrsaja = res[res.length - 1];
+		var ukupno_prekrsaja = $('#broj_prekrsaja_sudija_' + broj_sudije).val();
+		$('#broj_prekrsaja_sudija_' + broj_sudije).val(ukupno_prekrsaja - 1);
+		$('#div_prekrsaj_' + broj_sudije + "_" + broj_prekrsaja).remove();
+		var brojac = 1;
+		for (i = 1; i <= ukupno_prekrsaja; i++) {
+			if (i != broj_prekrsaja) {
+				$("#div_prekrsaj_" + broj_sudije + "_" + i).attr("id", "div_prekrsaj_" + broj_sudije + "_" + brojac);
+				// slika
+				$('#' + broj_sudije + "_" + i).attr('id', broj_sudije + '_' + brojac);
+				// select tag
+				$('#prekrsaj_' + broj_sudije + "_" + i).attr('name', 'prekrsaj_' + broj_sudije + '_' + brojac);
+				$('#prekrsaj_' + broj_sudije + "_" + i).attr('id', 'prekrsaj_' + broj_sudije + '_' + brojac);
+				brojac++;
+			}
+		}
+		var visina = Math.max(70, $('#prekrsaji_sudije_' + broj_sudije).height());
+		$('#podaci_sudije_' + broj_sudije).hide().height(visina).fadeIn('slow');
+    });
+    
+    // Obrisi sudiju
+    $(document).on('click', '.delete_sudija', function() {
+    	id = $(this).attr('id');
+    	res = id.split("_");
+    	var broj_sudije = res[res.length - 1];
+    	var ukupno_sudija = $('#broj_sudija').val();
+    	$('#sudija_' + broj_sudije).fadeOut('slow', function() { $(this).remove(); });
+    	$('#broj_sudija').val(ukupno_sudija - 1);
+    	var brojac = 1;
+    	for (i = 1; i <= ukupno_sudija; i++) {
+    		if (i != broj_sudije) {
+    			ukupno_prekrsaja = $('#broj_prekrsaja_sudija_' + i).val();
+    			$('#sudija_' + i).attr('id', 'sudija_' + brojac);
+    			$('#podaci_sudije_' + i).attr('id', 'podaci_sudije_' + brojac);
+    			$('#select_sudija_' + i).attr('name', 'required[sudija_' + brojac + ']');
+    			$('#select_sudija_' + i).attr('id', 'select_sudija_' + brojac);
+    			$('#delete_sudija_' + i).attr('id', 'delete_sudija_' + brojac);
+    			$('#pozicija_' + i).attr('name', 'required[pozicija_' + brojac + ']');
+    			$('#pozicija_' + i).attr('id', 'pozicija_' + brojac);
+    			$('#prekrsaji_sudije_' + i).attr('id', 'prekrsaji_sudije_' + brojac);
+    			$('#broj_prekrsaja_sudija_' + i).attr('id', 'broj_prekrsaja_sudija_' + brojac);
+    			$('#dodaj_prekrsaj_' + i).attr('id', 'dodaj_prekrsaj_' + brojac);
+    			$('#pojedinacan_prekrsaj_' + i).attr('id', 'pojedinacan_prekrsaj_' + brojac);
+    			for (j = 1; j <= ukupno_prekrsaja; j++) {
+    				$("#div_prekrsaj_" + i + "_" + j).attr("id", "div_prekrsaj_" + brojac + "_" + j);
+    				// slika
+    				$('#' + i + "_" + j).attr('id', brojac + '_' + j);
+    				// select tag
+    				$('#prekrsaj_' + i + "_" + j).attr('name', 'prekrsaj_' + brojac + '_' + j);
+    				$('#prekrsaj_' + i + "_" + j).attr('id', 'prekrsaj_' + brojac + '_' + j);
+    			}
+    			brojac++;
+    		}
+    	}
+    });
 });
