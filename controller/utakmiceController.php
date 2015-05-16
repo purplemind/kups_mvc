@@ -62,9 +62,17 @@ class utakmiceController Extends baseController {
 	}
 	
 	public function get_lige() {
-		$result = NULL;
-		if (!$result = $this->register->db_conn->query("SELECT * FROM lige")) {
+		$result = array();
+		if (!$res = $this->register->db_conn->query("SELECT sifra_lige, naziv_lige FROM lige")) {
 			$this->register->infos->set_error($this->register->db_conn->connect_error);
+		}
+		else { 
+		  while ($row = $res->fetch_assoc()) {
+			  $result[] = array(
+			    'sifra_lige' => $row['sifra_lige'],
+			    'naziv_lige' => $row['naziv_lige'],
+			  );
+			}
 		}
 		return $result;
 	}

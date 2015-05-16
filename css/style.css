@@ -91,3 +91,9 @@ table caption {
 	font-size: 1.1em;
 	font-weight: bold;
 }
+
+#loading {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+}

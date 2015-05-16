@@ -21,9 +21,8 @@ error_reporting(E_ALL);
  	$register->router->setPath(__SITE_PATH . '/' . 'controller');
  	
  	if (isset($_POST['ajax_request'])) {// && $_POST['ajax_request'] === TRUE) {
- 	  echo $register->router->loader();
- 	}
- 	else {
+ 	  die($register->router->loader());
+ 	} 
  	
 ?>
 
@@ -80,4 +79,3 @@ error_reporting(E_ALL);
 </body>
 
 </html>
-<?php } // else?>

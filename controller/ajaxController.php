@@ -25,10 +25,18 @@ public function display($action) {
     $obj = new $class($this->register);
     if (method_exists($obj, $method)) {
 	    //$content = call_user_func($obj->$method, $args[0], TRUE);
-	    $content = $obj->$method($args[0], TRUE);
+	    if (isset($args[0]) && isset($args[1])) {
+	      $content = $obj->$method($args[0], $args[1],TRUE);
+	    }
+	    elseif (isset($args[0])) {
+	     $content = $obj->$method($args[0], TRUE);
+	    }
     }
   }
-  return json_encode($content);
+  if ($_POST['dataType'] == 'json') {
+    return json_encode($content); 
+  }
+  return $content;
 }
 
 }
