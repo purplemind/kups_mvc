@@ -22,7 +22,7 @@ error_reporting(E_ALL);
  	
  	if (isset($_POST['ajax_request'])) {// && $_POST['ajax_request'] === TRUE) {
  	  die($register->router->loader());
- 	} 
+ 	}
  	
 ?>
 

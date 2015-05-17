@@ -4,25 +4,24 @@
 
 <form action="" id="form-utakmica" name="form-utakmica" method="post">
 	
-	<input type="hidden" name="akcija" value="<?php print $akcija; ?>" />
+	<!-- input type="hidden" name="akcija" value="<?php //print $akcija; ?>" /-->
 	<input type="hidden" name="broj_sudija" id="broj_sudija" value="0" />
 	
 	<div id="utakmica_sudije">
 
     <div id="utakmica">
-    
       <div class="inline">
     		<label for="godina_sezone" class="required-label">Sezona: </label>
     		<select name="required[godina_sezone]">
     			<?php while ($row = $sezone->fetch_assoc()): ?>
-    				<option value="<?php print $row['godina_sezone']; ?>" <?php if ($row['godina_sezone'] == $utakmica->godina_sezone) { print 'selected="selected"'; }?>><?php print $row['godina_sezone']; ?></option>
+    				<option value="<?php print $row['godina_sezone']; ?>"><?php print $row['godina_sezone']; ?></option>
     			<?php endwhile; ?>
     		</select>
   		</div>
 
   		<div class="inline">
     		<label for="datum" class="required-label">Datum: </label>
-    		<input type="text" size="10" name="required[datum]" id="datepicker" value="<?php print date('d/m/Y', $utakmica->datum); ?>" />
+    		<input type="text" size="10" name="required[datum]" id="datepicker" value="<?php print date('d/m/Y'); ?>" />
   		</div>
   		
   		<div class="inline last">
@@ -30,16 +29,14 @@
   			<select name="required[sifra_lige]" id="sifra_lige">
   			   <option value="0">- Liga -</option>
   				<?php foreach ($lige as $index => $value): ?>
-  					<option value="<?php print $value['sifra_lige']; ?>" <?php if ($value['sifra_lige'] == $utakmica->sifra_lige) { print 'selected="selected"'; }?>><?php print $value['naziv_lige']; ?></option>
+  					<option value="<?php print $value['sifra_lige']; ?>"><?php print $value['naziv_lige']; ?></option>
   				<?php endforeach; ?>
   			</select>
 			</div>
-  		<div class="clear_float"></div>
-  		
+  		<div class="clear_float"></div>	
   	</div>
   	
   	<div id="rezultat_pregledanje">
-
       <div class="inline">
     		<label for="domacin" class="required-label">Domaćin: </label>
   			<select name="required[domacin]" id="domacin">
@@ -71,12 +68,12 @@
 			  <input type="radio" name="pregledanje" value="0">Ne
 			  <input type="radio" name="pregledanje" value="1">I poluvreme
 			  <input type="radio" name="pregledanje" value="2">II poluvreme
-		  </div>
-		  
-		  <div id="dodajSudiju" class="fixed_btn">Dodaj sudiju</div>
-		  
+		  </div>  		  
 		</div>
   	
+  	<div id="dodajSudiju" class="fixed_btn">Dodaj sudiju</div>
 	</div>
-	 
+	
+	<div id="submit_div" align="center"><input type="submit" id="sacuvaj_utakmica" name="sacuvaj_utakmica" value="Sacuvaj" /></div>
+	
 </form>

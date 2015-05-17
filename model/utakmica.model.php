@@ -45,18 +45,59 @@ class utakmicaModel {
 		$this->init();
 	}
 	
-	public function set_first_step($post) {
-		//@todo: valid!
+	public function save($post) {
+	  // @todo: Validate post
 		$this->godina_sezone = $post['required']['godina_sezone'];
-		$this->datum = strtotime(DateTime::createFromFormat('d/m/Y', $post['required']['datum'])->format('m/d/Y'));
-		$this->vreme_pocetka = $post['required']['vreme_pocetka'];
+		$this->datum = DateTime::createFromFormat('d/m/Y', $post['required']['datum'])->format('Y-m-d');
 		$this->sifra_lige = $post['required']['sifra_lige'];
-		return array(
-			'godina_sezone' => $this->godina_sezone,
-			'datum' => $this->datum,
-			'vreme_pocetka' => $this->vreme_pocetka,
-			'sifra_lige' => $this->sifra_lige,	
-		);
+		$this->domacin = $post['required']['domacin'];
+		$this->domacin_golova = $post['required']['poena_domacin'];
+		$this->gost = $post['required']['gost'];
+		$this->gost_golova = $post['required']['poena_gost'];
+		$this->pregled = $post['pregledanje'];
+		$this->pregledana = 'nije';
+		$broj_sudija = $post['broj_sudija'];
+		$prekrsaji = array(); // index - sudija ID, value - array of fouls
+		for ($i = 1; $i <= $broj_sudija; $i++) {
+		  $pozicija_sudije = 'sudija_' . $post['required']['pozicija_' . $i];
+		  $this->$pozicija_sudije = $post['required']['sudija_' . $i];
+		  $broj_prekrsaja = $post['broj_prekrsaja_sudija_' . $i];
+		  $prekrsaji[$post['required']['sudija_' . $i]] = array();
+		  for ($j = 1; $j <= $broj_prekrsaja; $j++) {
+		    $prekrsaji[$post['required']['sudija_' . $i]][] = $post['prekrsaj_' . $i . '_' . $j];
+		  }
+		}
+		
+		$stmt = $this->register->db_conn->prepare('INSERT INTO utakmice
+				(godina_sezone, datum, sifra_lige, domacin, gost, domacin_ft_golova, gost_ft_golova, trazi_se_pregled,
+		    pregledana, sudija_R, sudija_U, sudija_HL, sudija_LJ, sudija_SJ, sudija_FJ, sudija_BJ)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+		$stmt->bind_param('issssiiissssssss', $this->godina_sezone, $this->datum, $this->sifra_lige, $this->domacin, $this->gost,
+		    $this->domacin_golova, $this->gost_golova, $this->pregled, $this->pregledana, $this->sudija_R, $this->sudija_U,
+		    $this->sudija_HL, $this->sudija_LJ, $this->sudija_SJ, $this->sudija_FJ, $this->sudija_BJ);
+		if (!$res = $stmt->execute()) {
+		  $this->register->infos->set_error($stmt->error);
+		}
+		else {
+		  $this->register->infos->set_info('Podaci utakmice su sacuvani.');
+		}
+		
+		// sacuvaj prekrsaje: save($prekrsaji, $sifra_utakmice)
+		$sifra_utakmice = $stmt->insert_id;
+		foreach($prekrsaji as $sifra_sudije => $faulovi_sudije) {
+		  foreach($faulovi_sudije as $index => $value) {
+		    $stmt = $this->register->db_conn->prepare('INSERT INTO prekrsaji_utakmice
+				  (sifra_utakmice, sifra_faula, sudija) VALUES (?, ?, ?)');
+		    $stmt->bind_param('iss', $sifra_utakmice, $value, $sifra_sudije);
+		    if (!$res = $stmt->execute()) {
+		      $this->register->infos->set_error($stmt->error);
+		    }
+		    else {
+		      $this->register->infos->set_info('Prekrsaj: ' . $value . ' , sudije: ' . $sifra_sudije . ' je sacuvan.');
+		    }
+		  }
+		}
+		
 	}
 	
 }

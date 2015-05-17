@@ -25,7 +25,7 @@ $(function() {
     	    	$('#loading').show();
     		},
     		success: function(data) {
-    			jQuery(data).hide().appendTo('#rezultat_pregledanje').fadeIn('slow');
+    			jQuery(data).hide().appendTo('#utakmica_sudije').fadeIn('slow');
     			$('#broj_sudija').val(parseInt($('#broj_sudija').val()) + 1);
     			$(document).scrollTop($(document).height());
     		},
@@ -88,6 +88,8 @@ $(function() {
         		$('#rezultat_pregledanje').fadeIn('slow');
         		dodajSudiju_btn = $("#dodajSudiju.fixed_btn");
         		dodajSudiju_btn.css({top: verticalCenter/*windowHeight - dodajSudiju_btn.height() - 25*/, left: windowWidth - dodajSudiju_btn.width() - 50});
+        		dodajSudiju_btn.fadeIn('slow');
+        		$('#submit_div').fadeIn('slow');
     		},
     	})
     	.always(function() {
@@ -140,6 +142,7 @@ $(function() {
     			$('#pozicija_' + i).attr('name', 'required[pozicija_' + brojac + ']');
     			$('#pozicija_' + i).attr('id', 'pozicija_' + brojac);
     			$('#prekrsaji_sudije_' + i).attr('id', 'prekrsaji_sudije_' + brojac);
+    			$('#broj_prekrsaja_sudija_' + i).attr('name', 'broj_prekrsaja_sudija_' + brojac);
     			$('#broj_prekrsaja_sudija_' + i).attr('id', 'broj_prekrsaja_sudija_' + brojac);
     			$('#dodaj_prekrsaj_' + i).attr('id', 'dodaj_prekrsaj_' + brojac);
     			$('#pojedinacan_prekrsaj_' + i).attr('id', 'pojedinacan_prekrsaj_' + brojac);

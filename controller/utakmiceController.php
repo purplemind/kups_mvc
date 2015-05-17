@@ -10,53 +10,14 @@ class utakmiceController Extends baseController {
 	 */
 	public function display($action) {
 		
-		include_once 'model/utakmica.model.php';
-		$utakmica = new utakmicaModel($this->register);
-
-		$action_parts = explode('/', $action);	
-		if (count($action_parts) > 1) {
-			$this->register->template->id = $action_parts[0];
-			$this->register->template->akcija = $action_parts[1];
-			if ($action_parts[1] == 'edit') {
-				$sudija->get_sudija($action_parts[0]);
-			}
-		}
-		else {
-			$this->register->template->akcija = 'add';
-		}
-		
 		$content = '';
 		$this->register->template->lige = $this->get_lige();
 		$this->register->template->sezone = $this->get_sezone();
-		$this->register->template->utakmica = $utakmica;
-		if (isset($_POST['step'])) {
-			switch($_POST['step']) {
-				case 1:
-					$this->register->template->steps_before = 1;
-					
-					$this->register->template->first_step = $utakmica->set_first_step($_POST);
-					$content = $this->register->template->load_template('utakmice');
-					$content .= $this->register->template->load_template('utakmice_klubovi');
-					//$this->register->template->utakmica = new Utakmica; set first step values	
-					break;
-				case 2:
-					print_r($_POST);
-					break;
-			}
+		$content = $this->register->template->load_template('utakmica');
+
+		if (isset($_POST['sacuvaj_utakmica'])) {
+		  $this->save($_POST);
 		}
-		else {
-			$this->register->template->steps_before = 0;
-			$content = $this->register->template->load_template('utakmica');
-		}
-		
-		//load template and return content:
-		/*
-		try {
-			$content = $this->register->template->load_template('utakmice');
-		} catch (Exception $e) {
-			$this->register->infos->set_error($e->getMessage());
-		}
-		*/
 		
 		return $content;
 	}
@@ -78,7 +39,7 @@ class utakmiceController Extends baseController {
 	}
 	
 	public function get_klubovi($liga, $ajax = FALSE) {
-		$res = $this->register->db_conn->query('SELECT sifra_kluba, naziv_kluba FROM klubovi WHERE sifra_lige = "' .$liga .'"');
+    $res = $this->register->db_conn->query('SELECT sifra_kluba, naziv_kluba FROM klubovi WHERE sifra_lige = "' .$liga .'"');
 	  if ($ajax === FALSE) {
 		  return $res;
 	  }
@@ -100,5 +61,11 @@ class utakmiceController Extends baseController {
 			$this->register->infos->set_error($this->register->db_conn->connect_error);
 		}
 		return $result;
+	}
+	
+	private function save($post) {
+	  include_once 'model/utakmica.model.php';
+	  $utakmica = new utakmicaModel($this->register);
+	  $utakmica->save($post);
 	}
 }

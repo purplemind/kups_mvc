@@ -20,7 +20,7 @@
   </div>
   
   <div id="prekrsaji_sudije_<?php print $broj_sudije; ?>" class="prekrsaji_sudije">
-    <input type="hidden" id="broj_prekrsaja_sudija_<?php print $broj_sudije; ?>" value="0" />
+    <input type="hidden" id="broj_prekrsaja_sudija_<?php print $broj_sudije; ?>" name="broj_prekrsaja_sudija_<?php print $broj_sudije; ?>" value="0" />
     
     <div id="dodaj_prekrsaj_<?php print $broj_sudije; ?>" class="dodaj_prekrsaj_btn">Dodaj prekršaj</div>
     
