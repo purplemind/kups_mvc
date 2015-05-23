@@ -57,6 +57,7 @@ error_reporting(E_ALL);
 					<!-- li><a href="?ruta=faulovi">Faulovi</a></li --><!-- UNETI DIREKTNO U BAZU ILI NEKA SKRIPTA ZA PREUZIMANJE -->
 					<!-- li><a href="?ruta=liga">Liga</a></li--><!-- UNETI DIREKTNO U BAZU ILI NEKA SKRIPTA ZA PREUZIMANJE -->
 					<li><a href="?ruta=utakmice">Utakmice</a></li>
+					<li><a href="?ruta=ocenjivanje">Ocenjivanje</a></li>
 				</ul>
 			</div>
 			

@@ -74,6 +74,6 @@
   	<div id="dodajSudiju" class="fixed_btn">Dodaj sudiju</div>
 	</div>
 	
-	<div id="submit_div" align="center"><input type="submit" id="sacuvaj_utakmica" name="sacuvaj_utakmica" value="Sacuvaj" /></div>
+	<div id="submit_div" align="center"><input type="submit" id="sacuvaj_utakmicu" name="sacuvaj_utakmicu" value="Sacuvaj" /></div>
 	
 </form>

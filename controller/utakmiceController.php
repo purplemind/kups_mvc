@@ -15,7 +15,7 @@ class utakmiceController Extends baseController {
 		$this->register->template->sezone = $this->get_sezone();
 		$content = $this->register->template->load_template('utakmica');
 
-		if (isset($_POST['sacuvaj_utakmica'])) {
+		if (isset($_POST['sacuvaj_utakmicu'])) {
 		  $this->save($_POST);
 		}
 		
