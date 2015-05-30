@@ -4,6 +4,7 @@ class utakmicaModel {
 	
 	private $register;
 	
+	public $sifra_utakmice;
 	public $godina_sezone;
 	public $datum;
 	public $sifra_lige;
@@ -98,29 +99,127 @@ class utakmicaModel {
 		}
 	}
 	
-	public function get_utakmice_sudija($sudija, $sezona) {
+	public function get_all($limit_start, $limit_end) {
 	  $result = array();
-	  $this->register->db_conn->prepare("SELECT utk.domacin, utk.gost, utk.sifra_utakmice
-      FROM utakmice AS utk
-      INNER JOIN pozicija_na_utakmici AS pnu ON pnu.utakmica = utk.sifra_utakmice
-      WHERE pnu.sudija = ?
-      AND utk.godina_sezone = ?
-      ORDER BY utk.godina_sezone DESC ");
-	  $stmt->bind_param('si', $sudija, $sezona);
-	  if (!$res = $stmt->execute()) {
-	    $this->register->infos->set_error($stmt->error);
-	  }
-	  else {
-	    while($row = $res->fetch_assoc()) {
-	      $result[] = array (
-	        'sifra_utakmice' => $row['sifra_utakmice'],
-	        'domacin' => $row['domacin'],
-	        'gost' => $row['gost'],
-	      );
+	  $res = $this->register->db_conn->query('SELECT * FROM utakmice LIMIT ' .$limit_start .', ' .$limit_end);
+	  include_once 'model/klub.php';
+	  $klub = new klubModel($this->register);
+	  $i = 0;
+	  while ($row = $res->fetch_assoc()) {
+	    $result[$i] = array();
+	    foreach($row as $index => $value) {
+	     $result[$i][$index] = $value;
 	    }
+	    $klub->get_klub($row['domacin']);
+	    $result[$i]['domacin'] = $klub->naziv_kluba; 
+	    $klub->get_klub($row['gost']);
+	    $result[$i]['gost'] = $klub->naziv_kluba; 
+	    $i++; 
 	  }
-	  
 	  return $result;
 	}
 	
+	public function get_all_at_sezona($sezona, $limit_start, $limit_end) {
+	  $result = array();
+	  $res = $this->register->db_conn->query('SELECT * FROM utakmice
+	    WHERE godina_sezone = ' . $sezona
+	    .' LIMIT ' .$limit_start .', ' .$limit_end);
+	  include_once 'model/klub.php';
+	  $klub = new klubModel($this->register);
+	  $i = 0;
+	  while ($row = $res->fetch_assoc()) {
+	    $result[$i] = array();
+	    foreach($row as $index => $value) {
+	      $result[$i][$index] = $value;
+	    }
+	    $klub->get_klub($row['domacin']);
+	    $result[$i]['domacin'] = $klub->naziv_kluba; 
+	    $klub->get_klub($row['gost']);
+	    $result[$i]['gost'] = $klub->naziv_kluba; 
+	    $i++;
+	  }
+	  return $result;
+	}
+	
+	public function get_all_at_liga($liga, $limit_start, $limit_end) {
+	  $result = array();
+	  $res = $this->register->db_conn->query('SELECT * FROM utakmice
+	    WHERE sifra_lige = "' . $liga .'"
+	     LIMIT ' .$limit_start .', ' .$limit_end);
+	  include_once 'model/klub.php';
+	  $klub = new klubModel($this->register);
+	  $i = 0;
+	  while ($row = $res->fetch_assoc()) {
+	    $result[$i] = array();
+	    foreach($row as $index => $value) {
+	      $result[$i][$index] = $value;
+	    }
+	    $klub->get_klub($row['domacin']);
+	    $result[$i]['domacin'] = $klub->naziv_kluba; 
+	    $klub->get_klub($row['gost']);
+	    $result[$i]['gost'] = $klub->naziv_kluba; 
+	    $i++;
+	  }
+	  return $result;
+	}
+	
+	public function get_all_at_sezona_liga($sezona, $liga, $limit_start, $limit_end) {
+	  $result = array();
+	  $res = $this->register->db_conn->query('SELECT * FROM utakmice
+	    WHERE godina_sezone = ' . $sezona
+	    .' AND sifra_lige = "' . $liga .'"  
+	     LIMIT ' .$limit_start .', ' .$limit_end);
+	  include_once 'model/klub.php';
+	  $klub = new klubModel($this->register);
+	  $i = 0;
+	  while ($row = $res->fetch_assoc()) {
+	    $result[$i] = array();
+	    foreach($row as $index => $value) {
+	      $result[$i][$index] = $value;
+	    }
+	    $klub->get_klub($row['domacin']);
+	    $result[$i]['domacin'] = $klub->naziv_kluba; 
+	    $klub->get_klub($row['gost']);
+	    $result[$i]['gost'] = $klub->naziv_kluba; 
+	    $i++;
+	  }
+	  return $result;
+	}
+	
+	public function get_utakmica($sifra_utakmice) {
+	  $res = $this->register->db_conn->query('SELECT * FROM utakmice WHERE sifra_utakmice = "' .$sifra_utakmice .'"');
+	  if ($res->num_rows > 0) {
+	    $row = $res->fetch_assoc();
+	    $this->sifra_utakmice = $row['sifra_utakmice'];
+	    $this->godina_sezone = $row['godina_sezone'];
+	    $this->datum = $row['datum'];
+	    $this->sifra_lige = $row['sifra_lige'];
+	    $this->domacin = $row['domacin'];
+	    $this->gost = $row['gost'];
+	    $this->domacin_golova = $row['domacin_ft_golova'];
+	    $this->gost_golova = $row['gost_ft_golova']; 
+	  }
+	}
+	
+	public function get_sudije() {
+	  $result = array();
+	  $res = $this->register->db_conn->query('SELECT pozicija_na_utakmici.*, sudije.ime, sudije.prezime, sudije.sifra_sudije
+	      FROM pozicija_na_utakmici
+	      INNER JOIN sudije ON sudije.sifra_sudije = pozicija_na_utakmici.sudija 
+	      WHERE pozicija_na_utakmici.utakmica = ' .$this->sifra_utakmice);
+	  while($row = $res->fetch_assoc()) {
+	    $result[] = $row;
+	  }
+	  return $result;
+	}
+	
+	public function get_prekrsaji_sudije($sifra_sudije) {
+	  $result = array();
+	  $res = $this->register->db_conn->query('SELECT * FROM prekrsaji_utakmice
+	      WHERE sifra_utakmice = ' .$this->sifra_utakmice .' AND sudija = "' .$sifra_sudije .'"');
+	  while ($row = $res->fetch_assoc()) {
+	    $result[] = $row;
+	  }
+	  return $result;
+	}
 }

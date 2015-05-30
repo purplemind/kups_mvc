@@ -40,13 +40,13 @@
 }
 
 #rezultat_pregledanje {
-	display: none;
+	/*display: none;*/
 }
 
 #dodajSudiju.fixed_btn {
 	position: fixed;
 	z-index: 100;
-	display: none;
+	/*display: none;*/
 	background-color: #1e90ff;
 	color: #fff;
 	padding: 10px;
@@ -98,7 +98,7 @@ img.delete_sudija {
 #submit_div {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	display: none;
+	/*display: none;*/
 }
 
 #submit_div input {
@@ -106,4 +106,44 @@ img.delete_sudija {
   color: #fff;
   padding: 5px;
   cursor: pointer;
+}
+
+.div_btn {
+	display: inline-block;
+	background-color: #5cb216;
+  padding: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+p.utakmica_prekrasaj {
+  display: block;
+  width: 95%;
+  background-color: #1a0084;
+  color: #fff;
+  padding: 3px;
+  cursor: pointer;
+  margin-bottom: 3px;
+  font-size: 0.9em;
+}
+
+p.utakmica_prekrasaj:hover {
+  background-color: #7559e3;
+  color: #1a0084;
+}
+
+.lista_prekrsaja select {
+  font-size: 0.9em;
+}
+
+.lista_prekrsaja {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.jedna_utakmica {
+	display: block;
+	width: 100%;
+	margin-bottom: 10x;
 }

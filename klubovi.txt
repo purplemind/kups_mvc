@@ -1,0 +1,70 @@
+PLS
+8
+NSD-GAT Novi Sad Dukes
+BGVU-SBB Beograd Vukovi
+PAPA-Pančevo Panthers
+ININ-Inđija Indians
+NIIM-Niš Imperatori
+KGWB-Kragujevac Wild Boars
+SMLE-Sremska Mitrovica Legionaries
+CAAW-Čačak Angel Warriors
+DLS
+6
+BGBD-Blue Dragons Beograd
+KIMA-Mamuti Kikinda
+POPA-Pastuvi Požarevac
+VRLA-Lavovi Vršac
+BOGB-Golden Bears Bor
+ZEPI-Pirates Zemun
+TLS
+6
+SOCE-Celtis Sombor
+SASH-Sharks Šabac
+KLKN-Knight Klek
+SOBE-Bears Sofia
+JABH-Black Hornets Jagodina
+OBHA-Hawks Obrenovac
+JL
+7
+CAAWJ-Čačak Angel Warriors
+KGWBJ-Kragujevac Wild Boars
+KVRCJ-Kraljevo Royal Crowns
+JABHJ-Jagodina Black Hornets
+SMLEJ-Sirmium Legionaries
+ININJ-Inđija Indians
+BGVUJ-Beograd Vukovi
+FL
+22
+NSWDF-Wild Dogs Novi Sad
+SOCEF-Celtis Sombor
+VRHUF-Hunters Vrbas
+KLKNF-Knights Klek
+SMLEF-Legionaries Sremska Mitrovica
+ININF-Indians Inđija
+PAPAF-Panthers Pančevo
+VAWWF-Werewolves Valjevo
+SASHF-Sharks Šabac
+BGVUF-Vukovi Beograd
+LASAF-Sabres Lazarevac
+ZAPIF-Pirati Zemun
+OBHAF-Hawks Obrenovac
+BGBDF-Blue Dragons Beograd
+KVRCF-Krune Kraljevo
+CAAW-Angel Warriors Čačak
+POF-KAF Požarevac
+KGWBF-Wild Boars Kragujevac
+JABHF-Black Hornets Jagodina
+JASCF-Strawberry Celts Jagodina
+BOGBF-Golden Bears Bor
+PIVIF-Vitezovi Pirot
+ZL
+9
+PAPAZ-Pančevo Panthers Ladies
+SMVA-Sremska Mitrovica Valkyries
+KIOT-Kikinda Orange Tribe
+NSAM-Novi Sad Amazonke
+KLKNZ-Klek Knights
+KGWBZ-Kragujevac Wild Boards
+BGVUZ-Beograd Vučice
+OBHAZ-Obrenovac Hawks
+KVRCZ-Kraljevo Royal Crowns

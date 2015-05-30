@@ -1,7 +1,7 @@
 $(function() {
 	
-	$("form")[0].reset();
-	$('#broj_sudija').val(0);
+	//$("form")[0].reset();
+	//$('#broj_sudija').val(0);
 
 	var windowWidth = Math.floor(window.innerWidth);
 	var windowHeight = Math.floor(window.innerHeight);
@@ -157,5 +157,82 @@ $(function() {
     			brojac++;
     		}
     	}
+    });
+    
+    // Pregled prekrsaja:
+    $('#prikazi_utakmice_btn').click( function() {
+    	var sezona = $('#sezona').val();
+    	var sudija = $('#sudija').val();
+    	if (sezona == 'NaN' || sudija == 'NaN') {
+    		alert('Morate odabrati i sezonu i sudiju');
+    	}
+    	else {
+	    	$('#sudijini_prekrsaji').empty();
+			$.ajax({
+				method: "POST",
+				// ?ruta=ajax/controller/method/args
+				url: "index.php?ruta=ajax/utakmice/get_utakmice_sudija/" + sudija + "/" + sezona,
+				data: { ajax_request: true, dataType: 'json' }, 
+				datatype: 'json',
+	    		beforeSend: function() {
+	    	    	$('#loading').show();
+	    		},
+	    		success: function(data) {
+	    			utakmice = jQuery.parseJSON(data);
+	    			$('#sudijine_utakmice').empty().fadeOut('slow');
+	    			$.each(utakmice, function(key, value) {   
+	   			     $('#sudijine_utakmice')
+	   			        .append('<p id="' + key + '" class="utakmica_prekrasaj">' + value.domacin + ' - ' + value.gost + '</p>')
+	   			        .fadeIn('slow');
+	    			});
+	    		},
+	    		complete: function() {
+	    			$('#loading').hide();
+	    		}
+			});
+    	}
+    });
+    $(document).on('click', 'p.utakmica_prekrasaj', function() {
+    	var utakmica = $(this).attr('id');
+    	var sudija = $('#sudija').val();
+		$.ajax({
+			method: "POST",
+			// ?ruta=ajax/controller/method/args
+			url: "index.php?ruta=ajax/utakmice/get_prekrsaji_sudije/" + utakmica + "/" + sudija,
+			data: { ajax_request: true, dataType: 'json' }, 
+			datatype: 'json',
+    		beforeSend: function() {
+    	    	$('#loading').show();
+    		},
+    		success: function(data) {
+    			prekrsaji = jQuery.parseJSON(data);
+    			$('#sudijini_prekrsaji').empty();
+    			var ocene = {
+    					'Nan': 'Ocena',
+    					'CC': 'CC',
+    					'MC': 'MC',
+    					'BC': 'BC',
+    					'NC': 'NC',
+    					'NG': 'NG',
+    					'CJ/IJ': 'CJ/IJ',
+    					'GM/BM': 'GM/BM',
+    					'NR': 'NR'};
+    			var i = 0;
+    			$.each(prekrsaji, function(key, value) {
+        			var select = $('<select></select>');
+        			$.each(ocene, function(key, value) {
+            			select.append($('<option>', {value: value}).text(value));
+        			});
+    				select.attr('id', 'prekrsaj_' + key);
+    				$('<div width="100%" class="lista_prekrsaja"></div>').hide()
+    					.append(++i + '. ' + value.naziv_faula)
+    					.append(select)
+        			    .appendTo('#sudijini_prekrsaji').fadeIn('slow');
+    			});
+    		},
+    		complete: function() {
+    			$('#loading').hide();
+    		}
+		});    	
     });
 });

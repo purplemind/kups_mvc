@@ -1,0 +1,10 @@
+PLS Prva liga Srbije
+DLS Druga liga Srbije
+TLS Treća liga Srbije
+JL Juniorska liga
+FL Fleg liga
+YL Youth liga
+ZL Ženska liga
+IFAF IFAF
+CEFL CEFL
+PRI Prijateljska
