@@ -39,9 +39,11 @@
 	margin-top: 20px;
 }
 
+/*
 #rezultat_pregledanje {
-	/*display: none;*/
+	display: none;
 }
+*/
 
 #dodajSudiju.fixed_btn {
 	position: fixed;

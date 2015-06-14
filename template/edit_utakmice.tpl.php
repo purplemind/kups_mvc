@@ -2,7 +2,7 @@
   <img src="images/loading.gif" />
 </div>
 
-<form action="" id="form-utakmica" name="form-utakmica" method="post">
+<form id="form-utakmica" name="form-utakmica" method="post">
 	
 	<input type="hidden" name="broj_sudija" id="broj_sudija" value="<?php print count($sudije); ?>" />
 	
@@ -20,7 +20,15 @@
 
   		<div class="inline">
     		<label for="datum" class="required-label">Datum: </label>
-    		<input type="text" size="10" name="required[datum]" id="datepicker" value="<?php print DateTime::createFromFormat('Y-m-d H:i:s', $utakmica->datum)->format('d/m/Y'); ?>" />
+    		<?php
+    		  if (isset($utakmica->datum)) { 
+    		    $datum = DateTime::createFromFormat('Y-m-d H:i:s', $utakmica->datum);
+    		    if (!$datum) {
+              $datum = DateTime::createFromFormat('Y-m-d', $utakmica->datum);
+            }
+    		  }
+    		?>
+    		<input type="text" size="10" name="required[datum]" id="datepicker" value="<?php if (isset($datum)) { print $datum->format('d/m/Y'); } ?>" />
   		</div>
   		
   		<div class="inline last">
@@ -108,6 +116,7 @@
             <?php endforeach; ?>
           </div>
         </div>
+        <div class="clear_float"></div>
  	    
  	    </div>
     <?php endforeach; ?>
@@ -115,6 +124,6 @@
   	<div id="dodajSudiju" class="fixed_btn">Dodaj sudiju</div>
 	</div>
 	
-	<div id="submit_div" align="center"><input type="submit" id="sacuvaj_utakmicu" name="sacuvaj_utakmicu" value="Sacuvaj" /></div>
+	<div id="submit_div" align="center"><input type="submit" id="sacuvaj_promene_utakmice" name="sacuvaj_promene_utakmice" value="Sačuvaj promene" /></div>
 	
 </form>

@@ -154,4 +154,76 @@ class sudijaModel {
 		return $res;
 	}
 	
+	public function get_utakmice_sudija($sudija, $sezona) {
+	  $result = array();
+	
+	  $res = $this->register->db_conn->query("SELECT utk.domacin, utk.gost, utk.sifra_utakmice
+      FROM utakmice AS utk
+      INNER JOIN pozicija_na_utakmici AS pnu ON pnu.utakmica = utk.sifra_utakmice
+      WHERE pnu.sudija = '" . $sudija . "'
+      AND utk.godina_sezone = " . $sezona ."
+      ORDER BY utk.godina_sezone DESC");
+	
+	  while($row = $res->fetch_assoc()) {
+	    $domacin = $this->register->db_conn->query("SELECT naziv_kluba FROM klubovi WHERE sifra_kluba='" .$row['domacin'] ."'");
+	    $domacin = $domacin->fetch_assoc();
+	    $gost = $this->register->db_conn->query("SELECT naziv_kluba FROM klubovi WHERE sifra_kluba='" .$row['gost'] ."'");
+	    $gost = $gost->fetch_assoc();
+	    $result[$row['sifra_utakmice']] = array (
+	     'sifra_utakmice' => $row['sifra_utakmice'],
+	     'domacin' => $domacin['naziv_kluba'],
+	     'gost' => $gost['naziv_kluba'],
+	    );
+	  }
+	
+	  return $result;
+	}
+		
+	private static function get_all_na_utakmici($id_utakmice, $reg) {
+	  $res = $reg->db_conn->query('SELECT id_podatka, sudija FROM pozicija_na_utakmici WHERE utakmica = ' .$id_utakmice);
+	  $result = array();
+	  while ($row = $res->fetch_assoc()) {
+	    $result[$row['id_podatka']] = $row['sudija'];
+	  }
+	  return $result;
+	}
+	
+	public static function save_sudije($id_utakmice, $sudije, $faulovi, $reg) {
+	  include_once 'model/prekrsaj.model.php';
+	  // all sudije already in database and check for changes:
+	  $all_sudije = self::get_all_na_utakmici($id_utakmice, $reg);
+	  foreach($sudije as $sifra_sudije => $pozicija_sudije) {
+  	  if ($id_podatka = array_search($sifra_sudije, $all_sudije)) {
+  	    // update sudija:
+  	    $reg->db_conn->query('UPDATE pozicija_na_utakmici
+  	      SET pozicija = "' .$pozicija_sudije .'" WHERE id_podatka = ' .$id_podatka);
+  	    unset($all_sudije[$id_podatka]);
+  	  }
+  	  else {
+  	    // save sudija:
+  	    $stmt = $reg->db_conn->prepare('INSERT INTO pozicija_na_utakmici
+    				(utakmica, sudija, pozicija) VALUES (?, ?, ?)');
+  	    $stmt->bind_param('iss', $id_utakmice, $sifra_sudije, $pozicija_sudije);
+  	    if ($stmt->execute()) {
+  	      $reg->infos->set_error($stmt->error);
+  	    }
+  	    else {
+  	      $reg->infos->set_info('Sudijske pozicije sacuvane.');
+  	    }
+  	  }
+  	  // process the fouls:
+  	  Prekrsaj::save_prekrsaji_sudije($id_utakmice, $sifra_sudije, $faulovi[$sifra_sudije], $reg);
+	  }
+	  if (!empty($all_sudije)) {
+	    foreach($all_sudije as $id_podatka => $sifra_sudije) {
+	      $reg->db_conn->query('DELETE FROM pozicija_na_utakmici WHERE id_podatka = ' .$id_podatka);
+	      $req->db_conn->query('DELETE prekrsaji_utakmice, pregledanje_prekrsaja
+	          FROM prekrsaji_utakmice
+            INNER JOIN pregledanje_prekrsaja
+            WHERE pregledanje_prekrsaja.id_prekrsaja = prekrsaji_utakmice.id_prekrsaja
+            AND preksaji_utakmice.sudija = "' .$sifra_sudije .'"');
+	    }
+	  }
+	}
+	
 }

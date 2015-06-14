@@ -32,6 +32,22 @@ li.first {
   margin-left: 10px;
   margin-bottom: 3px;
   list-style: none;
+  position: relative;
+}
+
+#menu ul li ul {
+  padding: 0;
+  position: absolute;
+  top: 0px;
+  left: 60px;
+  width: 150px;
+  display: none;
+  visibility: hidden;	
+}
+
+#menu ul li:hover ul {
+	display: block;
+  visibility: visible;
 }
 
 #main_content {

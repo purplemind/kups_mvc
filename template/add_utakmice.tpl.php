@@ -2,7 +2,7 @@
   <img src="images/loading.gif" />
 </div>
 
-<form action="" id="form-utakmica" name="form-utakmica" method="post">
+<form id="form-utakmica" name="form-utakmica" method="post">
 	
 	<!-- input type="hidden" name="akcija" value="<?php //print $akcija; ?>" /-->
 	<input type="hidden" name="broj_sudija" id="broj_sudija" value="0" />

@@ -125,4 +125,5 @@ class sudijeController Extends baseController {
 	  $this->register->template->broj_prekrsaja = $broj_prekrsaja;
 	  return $this->register->template->load_template('spisak_prekrsaja');
 	}
+	
 }

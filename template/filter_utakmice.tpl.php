@@ -4,25 +4,21 @@
     <select id="filter_sezona" name="filter_sezona">
       <option value="0">- Sezona -</option>
       <?php while ($row = $sezone->fetch_assoc()): ?>
-    	 <option value="<?php print $row['godina_sezone']; ?>"
-    	   <?php if (isset($selected_sezona) && $selected_sezona == $row['godina_sezone']): ?> selected="selected" <?php endif; ?>>
-    	   <?php print $row['godina_sezone']; ?>
-    	 </option>
+    	  <option value="<?php print $row['godina_sezone']; ?>" <?php if (isset($selected_sezona) && $selected_sezona == $row['godina_sezone']) { echo 'selected="selected"'; } ?>><?php print $row['godina_sezone']; ?></option>
     	<?php endwhile; ?>
     </select>
     
     <select id="filter_liga" name="filter_liga">
   	  <option value="0">- Liga -</option>
   		<?php foreach ($lige as $index => $value): ?>
-  		  <option value="<?php print $value['sifra_lige']; ?>"
-  		    <?php if (isset($selected_liga) && $selected_liga == $value['sifra_lige']): ?> selected="selected" <?php endif; ?>><?php print $value['naziv_lige']; ?></option>
+  		  <option value="<?php print $value['sifra_lige']; ?>" <?php if (isset($selected_liga) && $selected_liga == $value['sifra_lige']) { echo 'selected="selected"'; } ?>><?php print $value['naziv_lige']; ?></option>
   		<?php endforeach; ?>
     </select>
     
     <input type="submit" name="primeni_filter_btn" value="Primeni filter" />
   </div>
   
-  <?php if (isset($filter) && $filter && isset($utakmice)): ?>
+  <?php if (isset($filter) && isset($utakmice)): ?>
     <table name="pregled_utakmica">
       <caption>Utakmice po zadatim filterima</caption>
       <tr>
@@ -46,9 +42,9 @@
   <?php endif; ?>
 
   <div id="pager">
-    <a href="?ruta=utakmice/filter/1&filter_sezona=<?php print $selected_sezona; ?>&filter_liga=<?php print $selected_liga; ?>">1</a>
-    <a href="?ruta=utakmice/filter/2&filter_sezona=<?php print $selected_sezona; ?>&filter_liga=<?php print $selected_liga; ?>">2</a>
-    <a href="?ruta=utakmice/filter/3&filter_sezona=<?php print $selected_sezona; ?>&filter_liga=<?php print $selected_liga; ?>">3</a>
+    <a href="?ruta=utakmice/filter/1&filter_sezona=<?php if (isset($selected_sezona)) { print $selected_sezona; } ?>&filter_liga=<?php if (isset($selected_liga)) { print $selected_liga; } ?>">1</a>
+    <a href="?ruta=utakmice/filter/2&filter_sezona=<?php if (isset($selected_sezona)) { print $selected_sezona; } ?>&filter_liga=<?php if (isset($selected_liga)) { print $selected_liga; } ?>">2</a>
+    <a href="?ruta=utakmice/filter/3&filter_sezona=<?php if (isset($selected_sezona)) { print $selected_sezona; } ?>&filter_liga=<?php if (isset($selected_liga)) { print $selected_liga; } ?>">3</a>
   </div>
   
 </form>

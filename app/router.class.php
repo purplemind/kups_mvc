@@ -63,7 +63,7 @@ class Router {
 		/*** if the file is not there diaf ***/
 		if (is_readable($this->file) == false)
 		{
-			echo $this->file;
+			echo "Page doesn't exist! ";//echo $this->file;
 			die ('404 Not Found');
 		}
 	

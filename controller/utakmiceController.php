@@ -6,6 +6,8 @@ class utakmiceController Extends baseController {
 	 * Return HTML content
 	 *
 	 * @see baseController::display()
+	 * 
+	 * @param array $action : search, edit, add
 	 */
 	public function display($action) {
 		
@@ -15,7 +17,7 @@ class utakmiceController Extends baseController {
 		$action = $args[0];
 		
 	  switch ($action) {	      
-	    case 'filter':
+	    case 'search':
 	      $page = (isset($args[1])) ? $args[1] : 1;
 	      $this->register->template->page = $page;
 	      $this->register->template->lige = $this->get_lige();
@@ -31,18 +33,9 @@ class utakmiceController Extends baseController {
           $this->register->template->utakmice =
             $utakmica->get_all_at_sezona_liga($filter_sezona, $filter_liga, 30 * ($page - 1), 30 * $page);
         }
-        if ($filter_sezona != '0' && $filter_liga == '0') {
-          $this->register->template->selected_sezona = $filter_sezona;
-          $this->register->template->utakmice =
-           $utakmica->get_all_at_sezona($filter_sezona, 30 * ($page - 1), 30 * $page);
-        }
-        if ($filter_sezona == '0' && $filter_liga != '0') {
-          $this->register->template->selected_liga = $filter_liga;
-          $this->register->template->utakmice =
-           $utakmica->get_all_at_liga($filter_liga, 30 * ($page - 1), 30 * $page);
-        }
-      	if ($filter_sezona == '0' && $filter_liga == '0') {
-          $this->register->template->utakmice = $utakmica->get_all(30 * ($page - 1), 30 * $page);
+      	else if (isset($_POST['primeni_filter_btn'])) {
+         // $this->register->template->utakmice = $utakmica->get_all(30 * ($page - 1), 30 * $page);
+         $this->register->infos->set_error("Mora se odabrati sezona i liga!");
         }
 	      $content = $this->register->template->load_template('filter_utakmice');
 	      break;
@@ -53,14 +46,23 @@ class utakmiceController Extends baseController {
 	      (isset($args[1])) ? $sifra_utakmice = $args[1] : $sifra_utakmice = 0;
 	      if ($sifra_utakmice != 0) {
 	        $utakmica->get_utakmica($sifra_utakmice);
+	      	if (isset($_POST['sacuvaj_promene_utakmice'])) {
+	          $utakmica->update($_POST);
+	        }
 	        $sudije = $utakmica->get_sudije();
+	        array_unshift($sudije, null);
+	        unset($sudije[0]);
 	        $prekrsaji_sudije = array();
-	        for ($i = 0; $i < count($sudije); $i++) {
+	        for ($i = 1; $i <= count($sudije); $i++) {
 	          $prekrsaji_sudije[$sudije[$i]['sudija']] = array();
 	          $prekrsaji = $utakmica->get_prekrsaji_sudije($sudije[$i]['sudija']);
-	          for ($j = 0; $j < count($prekrsaji); $j++) {
+	          array_unshift($prekrsaji, null);
+	          unset($prekrsaji[0]);
+	          for ($j = 1; $j <= count($prekrsaji); $j++) {
 	            $prekrsaji_sudije[$sudije[$i]['sudija']][] = $prekrsaji[$j];
 	          }
+	          array_unshift($prekrsaji_sudije[$sudije[$i]['sudija']], null);
+	          unset($prekrsaji_sudije[$sudije[$i]['sudija']][0]);
 	        }
 	        $this->register->template->utakmica = $utakmica;
 	        $this->register->template->sudije = $sudije;

@@ -53,11 +53,14 @@ error_reporting(E_ALL);
 				<ul>
 					<li class="first"><a href="?ruta=sezona">Sezona</a></li>
 					<li><a href="?ruta=sudije">Sudije</a></li>
-					<!-- li><a href="?ruta=klubovi">Klubovi</a></li--><!-- UNETI DIREKTNO U BAZU ILI NEKA SKRIPTA ZA PREUZIMANJE -->
-					<!-- li><a href="?ruta=faulovi">Faulovi</a></li --><!-- UNETI DIREKTNO U BAZU ILI NEKA SKRIPTA ZA PREUZIMANJE -->
-					<!-- li><a href="?ruta=liga">Liga</a></li--><!-- UNETI DIREKTNO U BAZU ILI NEKA SKRIPTA ZA PREUZIMANJE -->
-					<li><a href="?ruta=utakmice">Utakmice</a></li>
+					<li>
+					   <a href="?ruta=utakmice">Utakmice</a>
+					   <ul>
+					     <li><a href="?ruta=utakmice/search">Pretraga</a></li>
+					   </ul>
+					</li>
 					<li><a href="?ruta=ocenjivanje">Ocenjivanje</a></li>
+					<li><a href="?ruta=statistika">Statistika</a></li>
 				</ul>
 			</div>
 			
