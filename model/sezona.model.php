@@ -62,4 +62,16 @@ class sezonaModel {
 		$stmt->close();
 	}
 		
+	public static function all_sezone($reg) {
+	  $result = array();
+	  if (!$res = $reg->db_conn->query("SELECT godina_sezone, naziv_sezone FROM sezona ORDER BY godina_sezone DESC")) {
+	    $reg->infos->set_error($reg->db_conn->connect_error);
+	  }
+	  else {
+	    while ($row = $res->fetch_assoc()) {
+	      $result[] = $row;	      	      
+	    }
+	  }
+	  return $result;
+	}
 }

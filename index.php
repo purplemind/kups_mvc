@@ -54,7 +54,7 @@ error_reporting(E_ALL);
 					<li class="first"><a href="?ruta=sezona">Sezona</a></li>
 					<li><a href="?ruta=sudije">Sudije</a></li>
 					<li>
-					   <a href="?ruta=utakmice">Utakmice</a>
+					   <a href="?ruta=utakmice">Utakmice</a> >> 
 					   <ul>
 					     <li><a href="?ruta=utakmice/search">Pretraga</a></li>
 					   </ul>

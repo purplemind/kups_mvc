@@ -61,7 +61,7 @@ class sudijaModel {
 	}
 	
 	private function is_valid_alfanumeric($post) {
-		$pattern = '/^[\w\p{L}\p{N}\p{Pd}\s\,\.\-_]+$/u';
+		$pattern = '/^[\w\p{L}\p{N}\p{Pd}\s\,\.\-]+$/u';
 		//$pattern = '/^[\w_\-\,\.\s]+$/';
 		$ok = true;
 		
@@ -224,6 +224,77 @@ class sudijaModel {
             AND preksaji_utakmice.sudija = "' .$sifra_sudije .'"');
 	    }
 	  }
+	}
+	
+	public static function all_sudije($reg) {
+	  $result = array();
+	  if (!$res = $reg->db_conn->query("SELECT sifra_sudije, ime, prezime FROM sudije ORDER BY godina_pocetka")) {
+	    $reg->infos->set_error($reg->db_conn->error);
+	  }
+	  else {
+	    while ($row = $res->fetch_assoc()) {
+	      $result[] = $row;
+	    }
+	  }
+	  return $result;
+	}
+	
+	public static function statistika_po_ligama($reg, $sudija, $sezona) {
+	  $result = array();
+	  if (!$res = $reg->db_conn->query('SELECT sudije.ime, sudije.prezime, lige.naziv_lige,
+	     COUNT(lige.naziv_lige) as broj_utakmica
+	     FROM sudije
+	     INNER JOIN pozicija_na_utakmici ON pozicija_na_utakmici.sudija = sudije.sifra_sudije
+	     INNER JOIN utakmice ON utakmice.sifra_utakmice = pozicija_na_utakmici.utakmica
+	     INNER JOIN lige ON lige.sifra_lige = utakmice.sifra_lige
+	     WHERE sudije.sifra_sudije = "' .$sudija .'" AND utakmice.godina_sezone = ' .$sezona .'
+	     GROUP BY lige.naziv_lige')) {
+	     $reg->infos->set_error($reg->db_conn->error);
+	  }
+	  else {
+	    while ($row = $res->fetch_assoc()) {
+	      $result[] = $row;
+	    }
+	  }
+	  return $result;
+	}
+	
+	public static function statistika_po_pozicijama($reg, $sudija) {
+	  $result = array();
+	  if (!$res = $reg->db_conn->query('SELECT pozicija_na_utakmici.pozicija, 
+	     COUNT( pozicija_na_utakmici.pozicija ) AS broj_utakmica
+	     FROM sudije
+	     INNER JOIN pozicija_na_utakmici ON pozicija_na_utakmici.sudija = sudije.sifra_sudije
+	     WHERE sudije.sifra_sudije = "' .$sudija .'" GROUP BY pozicija_na_utakmici.pozicija')) {
+	     $reg->infos->set_error($reg->db_conn->error);
+	  }
+	  else {
+	    while ($row = $res->fetch_assoc()) {
+	      $result[] = $row;
+	    }
+	  }
+	  
+	  return $result;
+	}
+	
+	public static function statistika_po_ocenama($reg, $sudija) {
+	  $result = array();
+	  
+	  if (!$res = $reg->db_conn->query('SELECT pregledanje_prekrsaja.ocena_prekrsaja,
+	      COUNT(pregledanje_prekrsaja.ocena_prekrsaja) as broj_faulova FROM sudije
+        INNER JOIN prekrsaji_utakmice ON prekrsaji_utakmice.sudija = sudije.sifra_sudije
+        INNER JOIN pregledanje_prekrsaja ON pregledanje_prekrsaja.id_prekrsaja = prekrsaji_utakmice.id_prekrsaja
+        WHERE sudije.sifra_sudije = "' .$sudija .'"
+        GROUP BY pregledanje_prekrsaja.ocena_prekrsaja')) {
+        $reg->infos->set_error($reg->db_conn->error);
+	  }
+	  else {
+	    while ($row = $res->fetch_assoc()) {
+	      $result[] = $row;
+	    }
+	  }
+	  
+	  return $result;
 	}
 	
 }
