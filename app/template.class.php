@@ -57,6 +57,8 @@ Class Template {
 
 		ob_start();
 		include ($path);
+		$content = ob_get_contents();
+		include (__SITE_PATH . '/template/base_content.tpl.php');
 		$content = ob_get_clean();
 		return $content;
 	}

@@ -186,4 +186,52 @@ $(function() {
     		}
 		});    	
     });
+    
+    // Function to delete Sezona:
+    function deleteSezona(sezona) {
+		$.ajax({
+			method: "POST",
+			// ?ruta=ajax/controller/method/args
+			url: "index.php?ruta=sezona/delete/" + sezona,
+			//data: { ajax_request: true, dataType: 'json' }, 
+			//datatype: 'json',
+			data: { ajax_request: true, dataType: 'html' },
+			datatype: 'html',
+    		beforeSend: function() {
+    	    	$('#loading').show();
+    		},
+    		success: function(data) {
+    			$('#base_content').html(data);
+    		},
+    		complete: function() {
+    			$('#loading').hide();
+    		}
+		});    	    	
+    }
+    
+    // Are you sure on delete:
+    $(document).on('click', 'a.delete', function(e) {
+    	e.preventDefault();
+    	var name = $(this).attr("name");
+    	$('<div></div>').appendTo('body')
+    	  .html('<div><h5>Da li ste sigurni?</h5></div>')
+    	  .dialog({
+    	      modal: true, title: 'Brisanje ' + name + '?', zIndex: 10000, autoOpen: true,
+    	      width: '300px', resizable: false,
+    	      buttons: {
+    	          Ne: function () {
+    	              $(this).dialog("close");
+    	          },
+		          Da: function () {
+		        	  deleteSezona(name);
+    	        	  //location.reload(true);
+		              $(this).dialog("close");
+		          }
+    	      },
+    	      close: function (event, ui) {
+    	          $(this).remove();
+    	      }
+    	});
+    });
+    
 });

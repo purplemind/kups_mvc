@@ -17,7 +17,7 @@ public function display($action) {
   for ($i = 0; $i < $arg_cnt; $i++) {
     $args[$i] = $action_parts[$i + 2];
   }
-  $content = array();
+  $content = '';
   $controller_path = $this->register->router->getPath() . '/' . $controller .'Controller.php'; 
   if (is_readable($controller_path)) {
     include_once $controller_path;

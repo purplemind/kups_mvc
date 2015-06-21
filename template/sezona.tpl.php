@@ -1,26 +1,35 @@
 <h3>
-	<?php if ($akcija == 'edit'): ?>
-		Promena informacija o sezoni
-	<?php else: ?>
-		Dodaj sezonu
-	<?php endif; ?>
+  <?php
+    switch ($akcija) {
+      case 'add':
+        echo "Dodaj sezonu";
+        break;
+
+      case 'edit':
+        echo "Promena informacija o sezoni";
+        break;
+        
+      case 'delete':
+        echo "Obriši podatke sezone";
+        break; 
+    }
+  ?>
 </h3>
-<form action="" id="form-sezona" name="form-sezona" method="post">
-	
-	<input type="hidden" name="akcija" value="<?php print $akcija; ?>" />
+
+<form id="form-sezona" name="form-sezona" method="post">
 	
 	<div class="form_element">
 		<label for="godina-sezone">Godina sezona:</label>
 		<select name="godina-sezone" id="godina-sezone">
 			<?php for ($i = date("Y"); $i >= 2005 ; $i--): ?>
-				<option value="<?php print $i; ?>" <?php if ($i == $sezona->godina) { print 'selected="selected"'; }?>><?php print $i; ?></option>
+				<option value="<?php print $i; ?>" <?php if (isset($sezona) && $i == $sezona->godina) { print 'selected="selected"'; }?>><?php print $i; ?></option>
 			<?php endfor; ?>
 		</select>
 	</div>
 	
 	<div class="form_element">
 		<label for="naziv-sezone">Naziv sezone:</label>
-		<input type="text" size="20" name="naziv-sezone" id="naziv-sezone" value="<?php ($akcija == 'edit') ? print $sezona->naziv : ""; ?>" />
+		<input type="text" size="20" name="naziv-sezone" id="naziv-sezone" value="<?php (isset($sezona)) ? print $sezona->naziv : ""; ?>" />
 	</div>
 	
 	<input type="submit" name="submit-sezona" id="submit-sezona" value="Potvrdi" />
@@ -42,7 +51,7 @@
 		<tr class="<?php ($i % 2 == 0) ? print 'even' : print 'odd'; ?>">
 			<td><?php print $row['godina_sezone']; ?></td>
 			<td><?php print $row['naziv_sezone']; ?></td>
-			<td><a href="?ruta=sezona/<?php print $row['godina_sezone']; ?>/edit">Izmeni</a> | <a href="?ruta=sezona/<?php print $row['godina_sezone']; ?>/delete">Obriši</a></td>
+			<td><a href="?ruta=sezona/edit/<?php print $row['godina_sezone']; ?>">Izmeni</a> | <a class="delete" href="?ruta=sezona/delete/<?php print $row['godina_sezone']; ?>" name="<?php print $row['godina_sezone']; ?>">Obriši</a--></td>
 		</tr>
 		<?php endwhile; ?>
 	</table>

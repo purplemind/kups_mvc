@@ -11,36 +11,140 @@ class sezonaModel {
 		$this->naziv = '';
 	}
 	
-	public function save($god, $naz) {
-		if (!empty($god) && !empty($naz)) {
-			$stmt = $this->register->db_conn->prepare('INSERT INTO sezona (godina_sezone, naziv_sezone) VALUES (?, ?)');
-			$stmt->bind_param('is', $god, $naz);
-			$res = $stmt->execute();
-			return $res;
-		}
-		return 0;
+	private function validate($post) {
+	  $pattern = '/^[\w\p{L}\p{N}\p{Pd}\s\,\.\-]+$/u';
+	  return isset($post['godina-sezone'])
+	    && isset($post['naziv-sezone'])
+	    && ctype_digit($post['godina-sezone'])
+	    && preg_match($pattern, $post['naziv-sezone']);
 	}
 	
-	public function update($god, $naz) {
-		if (!empty($god) && !empty($naz)) {
-			$stmt = $this->register->db_conn->prepare("UPDATE sezona SET godina_sezone = ?, naziv_sezone = ? WHERE godina_sezone = ?");
-			$stmt->bind_param('isi', $god, $naz, $this->godina);
-			$res = $stmt->execute();
-			$stmt->close();
-			return $res;
+	/**
+	 * Save posted data into database.
+	 * 
+	 * @param array $post Form posted data
+	 * @return 0 if it failed
+	 */
+	public function save($post) {
+	  if (!$this->validate($post)) {
+	    $this->register->infos->set_error("Oba polja moraju biti popunjena!");
+	    return 0;
+	  }
+	  
+	  if (!$stmt = $this->register->db_conn->prepare('INSERT INTO sezona (godina_sezone, naziv_sezone) VALUES (?, ?)')) {
+	    $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+	    return 0;
+	  }
+	  
+	  $stmt->bind_param('is', $post['godina-sezone'], $post['naziv-sezone']);
+	  if (!$stmt->execute()) {
+	    $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+	  	if ($this->register->db_conn->errno == 1062) {
+	      $this->register->infos->set_error("Godina sezone već postoji!");
+	    }
+	    return 0;
+	  }
+    $stmt->close();
+    
+	  $this->register->infos->set_info("Podaci su sačuvani.");
+    return 1;
+  }
+	
+  /**
+   * Change data for specified Sezona
+   *
+   * @param array $post Form posted data
+   * @return 0 if it failed
+   */
+	public function update($post) {
+		if (!$this->validate($post)) {
+	    $this->register->infos->set_error("Oba polja moraju biti popunjena!");
+	    return 0;
+	  }
+	  
+		if(!$stmt = $this->register->db_conn->prepare("UPDATE sezona SET godina_sezone = ?, naziv_sezone = ? WHERE godina_sezone = ?")) {
+	    $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+	    return 0;
 		}
-		return 0;
+	  
+		$stmt->bind_param('isi', $post['godina-sezone'], $post['naziv-sezone'], $this->godina);
+		if (!$stmt->execute()) {
+		  $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+		  return 0;
+		}
+		$stmt->close();
+		
+		$this->register->infos->set_info("Podaci su promenjeni.");
+		return 1;
 	}
 	
+	/**
+	 * Delete all related content: fouls, matches, official position on matches
+	 * for specified Sezona
+	 *  
+	 * @param int Godina sezone
+	 * @return 0 if it failed
+	 */
 	public function delete($god) {
-		if (!empty($god)) {
-			$stmt = $this->register->db_conn->prepare("DELETE FROM sezona WHERE godina_sezone = ?");
-			$stmt->bind_param('i', $god);
-			$res = $stmt->execute();
-			$stmt->close();
-			return $res;
+		if (empty($god)) {
+		  $this->register->infos->set_error("Nije odabrana sezona!");
+		  return 0;
 		}
-		return 0;
+		
+		$query = "DELETE sezona, utakmice, prekrsaji_utakmice, pozicija_na_utakmici, pregledanje_prekrsaja
+		    FROM sezona
+		    INNER JOIN utakmice
+		    INNER JOIN prekrsaji_utakmice
+		    INNER JOIN pozicija_na_utakmici
+		    INNER JOIN pregledanje_prekrsaja
+		    WHERE utakmice.godina_sezone = sezona.godina_sezone 
+		    AND prekrsaji_utakmice.sifra_utakmice = utakmice.sifra_utakmice
+		    AND pozicija_na_utakmici.utakmica = utakmice.sifra_utakmice
+		    AND pregledanje_prekrsaja.id_prekrsaja = prekrsaji_utakmice.id_prekrsaja
+		    AND sezona.godina_sezone = ?";
+		
+		if(!($stmt = $this->register->db_conn->prepare($query))) {
+		  $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+		  return 0;
+		}
+		
+		$stmt->bind_param('i', $god);
+		if(!$stmt->execute()) {
+		  $this->register->infos->set_error("Greška u radu sa bazom podataka broj: " . $this->register->db_conn->errno . ". Podatak nije sačuvan.");
+		  return 0;
+		}
+  	$stmt->close();
+
+  	$this->register->infos->set_info("Sezona $god i svi relavatni podaci su obrisani.");
+  	return 1;
+	}
+	
+	/**
+	 * Retrieve data from database for specified godina  
+	 * 
+	 * @param int $godina Godina sezone
+	 * @return sezonaModel this, otherweise NULL
+	 */
+	public function load_sezona($godina) {
+	  if (empty($godina)) {
+	    return NULL;
+	  } 
+	  
+	  if (!$stmt = $this->register->db_conn->prepare("SELECT * FROM sezona WHERE godina_sezone = ?")) {
+	    return NULL;
+	  }
+	  
+	  $stmt->bind_param('s', $godina);
+	  if (!$stmt->execute()) {
+	    return NULL;
+	  }
+	  $stmt->bind_result($col1, $col2);
+	  $stmt->fetch();
+	  $this->godina = $col1;
+	  $this->naziv = $col2;
+	  $stmt->close();
+	  
+	  return $this;
 	}
 	
 	public function get_all() {
